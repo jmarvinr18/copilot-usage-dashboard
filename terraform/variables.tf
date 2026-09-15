@@ -21,7 +21,6 @@ variable "function_name" {
 
 variable "description" {
   type    = string
-  default = ""
 }
 
 variable "role_name" {
@@ -61,4 +60,25 @@ variable "environment_variables" {
 variable "tags" {
   type    = map(string)
   default = {}
+}
+
+variable layer_filename {
+  type        = string
+}
+
+variable layer_name {
+  type        = string
+  default     = ""
+  description = "description"
+}
+
+
+variable compatible_runtimes  {
+  type        = list(string)
+  default     = ["python3.12"]
+}
+
+variable compatible_architectures  {
+  type        = list(string)
+  default     = ["x86_64"]
 }

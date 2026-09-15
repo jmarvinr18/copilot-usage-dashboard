@@ -3,9 +3,9 @@ client_account_id = "792682046440"
 environment       = "production"
 region            = "ap-southeast-1"
 
-function_name = "lwaDocumentProcessor"
-description   = "Formats and enriches output from Textract, Rekognition, and Transcribe for the LWA ingestion pipeline."
-role_name     = "lwa-document-processor-role"
+function_name = "copilot-usage-dashboard"
+description   = "for automated update of copilot dashboard"
+role_name     = "copilot-usage-dashboard-role"
 
 handler     = "lambda_function.lambda_handler"
 runtime     = "python3.12"
@@ -23,3 +23,6 @@ tags = {
   "Client"     = "livingway"
   "Created-by" = "terraform-jmr"
 }
+
+layer_filename = "openpyxl-layer.zip"
+layer_name = "openpyxl-layer"

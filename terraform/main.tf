@@ -1,11 +1,11 @@
 data "archive_file" "this" {
   type        = "zip"
-  source_dir  = "${path.module}/src"
+  source_dir  = "../${path.module}/app"
   output_path = "${path.module}/.build/${var.function_name}.zip"
 }
 
 module "role" {
-  source = "../../../../../../../modules/lambda/role"
+  source = "git::ssh://git@github.com/jmarvinr18/infra-as-code.git//terraform/provider/aws/modules/lambda/role"
 
   role_name = var.role_name
 
@@ -101,8 +101,15 @@ module "role" {
   tags = var.tags
 }
 
+module "lambda_layers" {
+  source = "git::ssh://git@github.com/jmarvinr18/infra-as-code.git//terraform/provider/aws/modules/lambda/layer"
+  layer_name = var.layer_name
+  filename      = "../${path.module}/openpyxl-layer.zip"
+  compatible_runtimes = var.compatible_runtimes
+  compatible_architectures = var.compatible_architectures
+}
 module "function" {
-  source = "../../../../../../../modules/lambda/function"
+  source = "git::ssh://git@github.com/jmarvinr18/infra-as-code.git//terraform/provider/aws/modules/lambda/function"
 
   function_name    = var.function_name
   description      = var.description
@@ -113,6 +120,8 @@ module "function" {
   source_code_hash = data.archive_file.this.output_base64sha256
   timeout          = var.timeout
   memory_size      = var.memory_size
+
+  layers           = [module.lambda_layers.arn]
 
   environment_variables = var.environment_variables
 
